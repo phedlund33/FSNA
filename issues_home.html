@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Frys' Spring Neighborhood Association | FSNA</title>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1107646-1";
+urchinTracker();
+</script>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAHM9X6Cd4TleHq0a4g8b_bBQTkag5BIz_iR5Og6bFD0Oc3hPPdxSzZE74HxFNrfW3UF_GqGor1cl4MQ"
+      type="text/javascript"></script>
+   <script type="text/javascript">
+    //<![CDATA[
+	
+    function load() {
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map"));
+        map.addControl(new GSmallMapControl());
+        map.addControl(new GMapTypeControl());
+        map.setCenter(new GLatLng(38.0183, -78.5122), 12);
+
+        // Create a base icon for all of our markers that specifies the
+        // shadow, icon dimensions, etc.
+        var baseIcon = new GIcon();
+        baseIcon.shadow = "http://www.google.com/mapfiles/shadow50.png";
+        baseIcon.iconSize = new GSize(20, 34);
+        baseIcon.shadowSize = new GSize(37, 34);
+        baseIcon.iconAnchor = new GPoint(9, 34);
+        baseIcon.infoWindowAnchor = new GPoint(9, 2);
+        baseIcon.infoShadowAnchor = new GPoint(18, 25);
+
+        // Creates a marker whose info window displays the letter corresponding
+        // to the given index.
+
+        function createMarker(point, index, place, letter) {
+          // Create a lettered icon for this point using our icon class
+          //var letter = String.fromCharCode("A".charCodeAt(0) + index);
+          var icon = new GIcon(baseIcon);
+          icon.image = "http://www.google.com/mapfiles/marker" + letter + ".png";
+		  //icon.image = "images/arrow.jpg";
+          var marker = new GMarker(point, icon);
+
+          GEvent.addListener(marker, "click", function() {
+           marker.openInfoWindowHtml("<span id='map_marker_text'>" + place + "</span>");
+		   
+          });
+          return marker;
+        }
+
+		
+          var point1 = new GLatLng(38.0213, -78.5095);
+		  map.addOverlay(createMarker(point1, 1, 'Cherry Hill', 'A'));
+		  var point2 = new GLatLng(38.0252, -78.5150);
+		  map.addOverlay(createMarker(point2, 2, 'JPA Bridge', 'B'));
+		  var point3 = new GLatLng(37.9870, -78.5249);
+		  map.addOverlay(createMarker(point3, 3, 'Biscuit Run', 'C'));
+		  var point4 = new GLatLng(38.0259, -78.5109);
+		  map.addOverlay(createMarker(point4, 4, 'Hill Street development', 'D'));
+		  var point5 = new GLatLng(38.0149, -78.5133);
+		  map.addOverlay(createMarker(point5, 5, 'Belleview Woods development', 'E'));
+		  var point6 = new GLatLng(38.0142, -78.5160);
+		  map.addOverlay(createMarker(point6, 6, 'Old Lynchburg Road', 'F'));
+		  var point7 = new GLatLng(38.0210, -78.5199);
+		  map.addOverlay(createMarker(point7, 7, 'Huntley/Dymond development', 'G'));
+		  var point8 = new GLatLng(38.0183, -78.5280);
+		  map.addOverlay(createMarker(point8, 8, 'Granger Property', 'H'));
+		  var point9 = new GLatLng(38.01219138136002, -78.52070331573486);
+		  map.addOverlay(createMarker(point9, 9, 'Oxford Property', 'I'));
+		  
+		  GEvent.addDomListener(document.getElementById("click_1"), "click", function() {
+           // map.panTo(point1);
+			//map.setZoom(14);
+			map.setCenter(point1, 15);
+          });
+		  GEvent.addDomListener(document.getElementById("click_2"), "click", function() {
+           // map.panTo(point2);
+			//map.setZoom(14);
+			map.setCenter(point2, 15);
+          });
+		  GEvent.addDomListener(document.getElementById("click_3"), "click", function() {
+           // map.panTo(point3);
+			//map.setZoom(12);
+			map.setCenter(point3, 12);
+          });	
+		  GEvent.addDomListener(document.getElementById("click_4"), "click", function() {
+			map.setCenter(point4, 15);
+			//map.panTo(point4);
+          });
+		  GEvent.addDomListener(document.getElementById("click_5"), "click", function() {
+			map.setCenter(point5, 15);
+			//map.panTo(point5);
+          });	   
+		  GEvent.addDomListener(document.getElementById("click_6"), "click", function() {
+			map.setCenter(point6, 15);
+			//map.panTo(point6);
+          });
+		  GEvent.addDomListener(document.getElementById("click_7"), "click", function() {
+			map.setCenter(point7, 15);
+			//map.panTo(point7);
+          });
+		  GEvent.addDomListener(document.getElementById("click_8"), "click", function() {
+			map.setCenter(point8, 15);
+			//map.panTo(point8);
+          });
+		  GEvent.addDomListener(document.getElementById("click_9"), "click", function() {
+			map.setCenter(point9, 15);
+			//map.panTo(point8);
+          });
+      }
+    }
+
+    //]]>
+    </script>
+  </head>
+<body onload="load()" onunload="GUnload()">
+<div id="header_container">
+<div id="image_right">
+  <div align="right"></div>
+</div>
+<div id="logo">
+  <img src="beta/images/header_logo.jpg" alt="Fry's Spring Neighborhood Association" width="275" height="80" /></div>
+</div>
+<div id="nav"><a href="index.html">HOME</a> | <a href="about.html">ABOUT FSNA</a> | NEIGHBORHOOD ISSUES | <a href="meetings.html">MEETINGS</a> | <a href="fsna_news.html">NEWS</a>| <a href="map.html">MAP</a> | <a href="octoberfest.html">OKTOBERFEST</a> | <a href="links.html">LINKS</a></div>
+<span id="issue_locator_list">
+		<ul>
+		  <li>A. <a href="cherry_hill.html">Cherry Hill</a> [<a id ="click_1" href='#'>map</a>]</li>
+		  <li>B. <a href="JPA_bridge.html">JPA bridge</a> [<a id ="click_2" href='#'>map</a>]</li>
+		  <li>C. Biscuit Run [<a id ="click_3" href='#'>map</a>]</li>
+		  <li>D. Hill Street development [<a id ="click_4" href='#'>map</a>]</li>
+		  <li>E. Belleview Woods development [<a id ="click_5" href='#'>map</a>]</li>
+		  <li>F. Old Lynchburg Road [<a id ="click_6" href='#'>map</a>]</li>
+		  <li>G. <a href="huntley.html">Huntley/Dymond Property</a> [<a id ="click_7" href='#'>map</a>]</li>
+		  <li>H. Granger Property [<a id ="click_8" href='#'>map</a>]</li>	
+          <li>I. <a href="oxford_property.html">Oxford Property</a> [<a id ="click_9" href='#'>map</a>]</li>		 
+		</ul>
+		<br />Use the '+' and '-' buttons to zoom in or out on the map.  <br /><br />Click and drag to reposition the map.
+</span>
+	
+	<div id="map"></div>
+
+   
+
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Frys' Spring Neighborhood Association | FSNA</title>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1107646-1";
+urchinTracker();
+</script>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1107646-1";
+urchinTracker();
+</script>
+
+<script type="text/javascript" src="includes/xpath.js"></script>
+<script type="text/javascript" src="includes/SpryData.js"></script>
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/news.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+var dsNews = new Spry.Data.XMLDataSet("XML/news.xml", "news_items/news_item");
+</script>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAcps14AaC6OlkJiepbF-IBBRBajO6394u-4Fu41fNFoO2HhkP3xT0OiUvdDCZ3UK45rhDLbQZDq3UJA"
+      type="text/javascript"></script>
+   <script type="text/javascript">
+    //<![CDATA[
+	
+    function load() {
+	
+		//Initiate filter for issue specific news items in xml/news.xml file
+		StartFilterTimer();
+	
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("issue_map"));
+    	
+		map.addControl(new GSmallMapControl());
+        map.addControl(new GMapTypeControl());
+		map.setCenter(new GLatLng(38.0204, -78.5086), 15);
+		map.setMapType(G_HYBRID_MAP);
+        // Create a base icon for all of our markers that specifies the
+        // shadow, icon dimensions, etc.
+        var baseIcon = new GIcon();
+        baseIcon.shadow = "http://www.google.com/mapfiles/shadow50.png";
+        baseIcon.iconSize = new GSize(20, 34);
+        baseIcon.shadowSize = new GSize(37, 34);
+        baseIcon.iconAnchor = new GPoint(9, 34);
+        baseIcon.infoWindowAnchor = new GPoint(9, 2);
+        baseIcon.infoShadowAnchor = new GPoint(18, 25);
+
+        // Creates a marker whose info window displays the letter corresponding
+        // to the given index.
+
+        function createMarker(point, index, place, letter) {
+          // Create a lettered icon for this point using our icon class
+          //var letter = String.fromCharCode("A".charCodeAt(0) + index);
+          var icon = new GIcon(baseIcon);
+          icon.image = "http://www.google.com/mapfiles/marker.png";
+		  //icon.image = "images/arrow.jpg";
+          var marker = new GMarker(point, icon);
+
+          GEvent.addListener(marker, "click", function() {
+           marker.openInfoWindowHtml("<span id='map_marker_text'>" + place + "</span>");
+		   
+          });
+          return marker;
+        }
+
+		
+          var point1 = new GLatLng(38.0203, -78.5086);
+		  map.addOverlay(createMarker(point1, 1, 'Cherry Hill', 'A'));
+
+		  
+		 
+      }
+    }
+//***********************************************************************************************
+//START SPRY/AJAX CODE
+function SelectTopic()
+{
+	var tf = "CH";
+	if (!tf)
+	{
+		// If the text field is empty, remove any filter
+		// that is set on the data set.
+
+		dsNews.filter(null);
+		return;
+	}
+
+	// Set a filter on the data set that matches any row
+	// that begins with the string in the text field.
+	
+	var regExpStr = tf;
+
+	var regExp = new RegExp(regExpStr, "i");
+	
+	var filterFunc = function(ds, row, rowNumber)
+	{
+		var str = row["type"];
+		if (str && str.search(regExp) != -1)
+			return row;
+		return null;
+	};
+
+	dsNews.filter(filterFunc);
+}
+
+function StartFilterTimer()
+{	
+	
+	if (StartFilterTimer.timerID)
+		clearTimeout(StartFilterTimer.timerID);
+		
+		StartFilterTimer.timerID = setTimeout(function() { StartFilterTimer.timerID = null; SelectTopic(); }, 100);
+
+}
+
+//END SPRY/AJAX CODE
+    //]]>
+    </script>
+  </head>
+<body onload="load()" onunload="GUnload()">
+<div id="header_container">
+<div id="image_right">
+  <div align="right"></div>
+</div>
+<div id="logo">
+  <img src="beta/images/header_logo.jpg" alt="Fry's Spring Neighborhood Association" width="275" height="80" /></div>
+</div>
+<div id="nav"><a href="index.html">HOME</a> | <a href="issues_home.html">NEIGHBORHOOD ISSUES</a> | <a href="meetings.html">MEETINGS</a> | <a href="fsna_news.html">NEWS</a> | <a href="map.html">MAP</a> | <a href="octoberfest.html">OKTOBERFEST</a> | <a href="links.html">LINKS</a></div>
+<h1>Cherry Hill Development</h1>
+<div id="pictures"><img src="images/issues/cherry_avenue_small.jpg" alt="Cherry Avenue PUD view from Highland Avenue" width="137" height="104" border="1" />&nbsp;&nbsp;<img src="images/issues/cherry_avenue2_small.jpg" alt="Cherry Avenue PUD" width="136" height="102" border="1"/><br />
+ <a href="http://www.flickr.com/search/?s=rec&w=25778166%40N00&q=%22Cherry+Hill%22&m=text" target="_blank">click for more images</a></div>
+<h2>Background:</h2> <span id="issue_background_info">117 homes to be built on 15 acres on Cherry Avenue. Koestler is the developer.  Jim Tolbert, head of Neighborhood Development Services, informed the last FSNA meeting that the reason there is still only one access road into this huge, cul-de-sac development is because city council made a deal with Johnson Village that there be only one road. This places huge pressure on Cherry Avenue,  Highland Avenue, Robertson and other local streets. City council should correct this mistake. Traffic planning for the intersection of Willard/Cleveland and Cherry is stymied by this problem as well. (Source: research by AK Wieder)
+
+</span>
+<div id="links_title"><h2>Contact Information:</h2></div>
+<div id="issue_links">
+	    
+	     
+	      <li>David Galloway <br />
+	        Faulconer Construction, ProjectManager <br />
+	        295-0033 <br />
+	        dgalloway@faulconerconstruction.com</li>
+	      <li>Timothy Wade Faulconer Construction, Project Supt. <br />
+	        906-5270 <br />
+	        twade22939@aol.com</li>
+	      <li>Malcolm Meistrell <br />
+	        KG Associates, Construction Mgmt. <br />
+	        979-9500 <br />
+	        malcolm@kgassociates.net<br />
+          </li>
+	      <li>City staff people</li>
+	      <li>Kristel Riddervold <br />
+	        City of Charlottesville, Environmental <br />
+	        970-3631 <br />
+	        riddervold@charlottesville.org</li>
+	      <li>Martin Quinn <br />
+	        City of Charlottesville, Engineering <br />
+	        970-3991 <br />
+	        quinn@charlottesville.org</li>
+	      <li>Khadija Abdur-Rahman City, E &amp; S Administration <br />
+	        970-3188 <br />
+	        abdur-rahman@charlottesville.org</li>
+	      <li>Steve Wright <br />
+	        City of Charlottesville, E &amp; S Inspections 970-3307 <br />
+	        wrights@charlottesville.org</li>
+	      <li>Brian Haluska <br />
+	        City, Neighborhood Planner<br />
+	        970-3091 <br />
+	        haluska@charlottesville.org</li>
+	      <li>Planning commission, city of Charlottesville, chair<br />
+	        Karen Firehock cvillefirehock@earthlink.net</li>
+</div>
+	
+	<div id="issue_map"></div>
+<div id="issue_news">
+  <div class="pod_title">
+  <h1>News/Information:</h1>
+  <div spry:region="dsNews" id="news_region">
+<table>
+	<tr spry:repeat="dsNews">
+		<td id="news_cell"> 
+			<h1>{date} - {headline}</h1>
+ 			<h2 spry:if="'{summary}' != '';">{summary}<br /><br /></h2> 			
+			<p class="image_format" spry:if="'{image}' != '';"><img src="images/{image}" /></p>
+			<p class="news_link" spry:if="'{more_info}' != '';"><a href="{more_info_link}" target="_blank">{more_info}</a></p>		</td>
+	</tr>
+</table>
+</div>
+</div>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+body {
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+.title {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	color: #006633;
+	line-height: 40px;
+}
+.menu {
+	background-color: #FFFFFF;
+	float: none;
+	height: 250px;
+	width: 200px;
+	border: #000000;
+}
+.menuItem {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #339900;
+}
+
+.announcement {
+	font-size: 18px;
+	font-variant: normal;
+	color: #006600;
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+}
+#map{
+
+	width: 300px; 
+	height: 200px;
+	border:thick #003366 solid;
+	margin: 25px;
+
+}
+.selectedSection {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	text-decoration: none;
+	color: #CC3300;
+}
+.regularText {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	width: 450px;
+}
+.footerText {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10px;
+}
+a:link {
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+}
+.menuSubItem {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+#forum{
+	padding: 10px;
+
+}
+.attention{
+	background-color: #FF0000;
+
+
+}

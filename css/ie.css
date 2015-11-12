@@ -1,0 +1,15 @@
+.article section.intro figure figcaption {
+	background: url("/images/ie-bg-white-80.png");
+}
+
+figcaption.overlay {
+	background: url("/images/ie-bg-blue3-70.png");
+}
+
+nav#main-nav ul li#my-va #my-va-login {
+	background: url("/images/ie-bg-myva.png") repeat-x top center;
+}
+
+.article section.article {
+	background: url("/images/bg-article-top.png") no-repeat top center;
+}

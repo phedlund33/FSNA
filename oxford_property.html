@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Frys' Spring Neighborhood Association | FSNA</title>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1107646-1";
+urchinTracker();
+</script>
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-1107646-1";
+urchinTracker();
+</script>
+
+<script type="text/javascript" src="includes/xpath.js"></script>
+<script type="text/javascript" src="includes/SpryData.js"></script>
+
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/news.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+var dsNews = new Spry.Data.XMLDataSet("XML/news.xml", "news_items/news_item");
+</script>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAcps14AaC6OlkJiepbF-IBBRBajO6394u-4Fu41fNFoO2HhkP3xT0OiUvdDCZ3UK45rhDLbQZDq3UJA"
+      type="text/javascript"></script>
+   <script type="text/javascript">
+    //<![CDATA[
+	
+    function load() {
+	
+		//Initiate filter for issue specific news items in xml/news.xml file
+		StartFilterTimer();
+	
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("issue_map"));
+    	
+		map.addControl(new GSmallMapControl());
+        map.addControl(new GMapTypeControl());
+		map.setCenter(new GLatLng(38.01219138136002, -78.52070331573486), 15);
+		map.setMapType(G_HYBRID_MAP);
+        // Create a base icon for all of our markers that specifies the
+        // shadow, icon dimensions, etc.
+        var baseIcon = new GIcon();
+        baseIcon.shadow = "http://www.google.com/mapfiles/shadow50.png";
+        baseIcon.iconSize = new GSize(20, 34);
+        baseIcon.shadowSize = new GSize(37, 34);
+        baseIcon.iconAnchor = new GPoint(9, 34);
+        baseIcon.infoWindowAnchor = new GPoint(9, 2);
+        baseIcon.infoShadowAnchor = new GPoint(18, 25);
+
+        // Creates a marker whose info window displays the letter corresponding
+        // to the given index.
+
+        function createMarker(point, index, place, letter) {
+          // Create a lettered icon for this point using our icon class
+          //var letter = String.fromCharCode("A".charCodeAt(0) + index);
+          var icon = new GIcon(baseIcon);
+          icon.image = "http://www.google.com/mapfiles/marker.png";
+		  //icon.image = "images/arrow.jpg";
+          var marker = new GMarker(point, icon);
+
+          GEvent.addListener(marker, "click", function() {
+           marker.openInfoWindowHtml("<span id='map_marker_text'>" + place + "</span>");
+		   
+          });
+          return marker;
+        }
+
+		
+          var point1 = new GLatLng(38.01219138136002, -78.52070331573486);
+		  map.addOverlay(createMarker(point1, 1, 'Oxford Propert', 'I'));
+
+		  
+		 
+      }
+    }
+//***********************************************************************************************
+//START SPRY/AJAX CODE
+function SelectTopic()
+{
+	var tf = "OP";
+	if (!tf)
+	{
+		// If the text field is empty, remove any filter
+		// that is set on the data set.
+
+		dsNews.filter(null);
+		return;
+	}
+
+	// Set a filter on the data set that matches any row
+	// that begins with the string in the text field.
+	
+	var regExpStr = tf;
+
+	var regExp = new RegExp(regExpStr, "i");
+	
+	var filterFunc = function(ds, row, rowNumber)
+	{
+		var str = row["type"];
+		if (str && str.search(regExp) != -1)
+			return row;
+		return null;
+	};
+
+	dsNews.filter(filterFunc);
+}
+
+function StartFilterTimer()
+{	
+	
+	if (StartFilterTimer.timerID)
+		clearTimeout(StartFilterTimer.timerID);
+		
+		StartFilterTimer.timerID = setTimeout(function() { StartFilterTimer.timerID = null; SelectTopic(); }, 100);
+
+}
+
+//END SPRY/AJAX CODE
+    //]]>
+    </script>
+  </head>
+<body onload="load()" onunload="GUnload()">
+<div id="header_container">
+<div id="image_right">
+  <div align="right"></div>
+</div>
+<div id="logo">
+  <img src="beta/images/header_logo.jpg" alt="Fry's Spring Neighborhood Association" width="275" height="80" /></div>
+</div>
+<div id="nav"><a href="index.html">HOME</a> | <a href="issues_home.html">NEIGHBORHOOD ISSUES</a> | <a href="meetings.html">MEETINGS</a> | <a href="fsna_news.html">NEWS</a> | <a href="map.html">MAP</a> | <a href="octoberfest.html">OKTOBERFEST</a> | <a href="links.html">LINKS</a></div>
+<h1>Oxford Property</h1>
+<div id="pictures"><img src="images/issues/oxford/IMGP0384.jpg" alt="Cherry Avenue PUD view from Highland Avenue" width="156" height="104" border="1" />&nbsp;&nbsp;<img src="images/issues/oxford/IMGP0397.jpg" alt="Cherry Avenue PUD" width="117" height="94" border="1"/><br />
+ </div>
+<h2>Background:</h2> <span id="issue_background_info">This property, just over the County line, is slated for developement.  The original proposal for 308 apartment units in nine building was rejected by the Albemarle County Planning Commission at a work session on January 15, 2008.  Valerie Long, the attorney representing the developer tried to get the Commissioners to indicate how many apartment units they would support on the property and hinted that 100 units might be an option that they propose after re-working the site plan.  The Commissioners' initial rejection was tied to the difficult terrain that is associated with the property including, wetlands, steep slopes and a sizable flood plain.  Additionally only one entrance is feasible with this property.
+
+</span>
+<div id="links_title"><h2>Contact Information:</h2></div>
+<div id="issue_links">
+	    
+	     
+	      <li>John Shepherd <br />
+	        Planner, Albemarle County <br />
+	        296-3023 <br />
+  djshepher@albemarle.org</li>
+	      <li>Valerie Long <br />
+          	Williams Mullen <br />
+	        951-5709 <br />
+  vlong@williamsmullen.com</li>
+
+</div>
+	
+	<div id="issue_map"></div>
+<div id="issue_news">
+  <div class="pod_title">
+  <h1>News/Information:</h1>
+  <div spry:region="dsNews" id="news_region">
+<table>
+	<tr spry:repeat="dsNews">
+		<td id="news_cell"> 
+			<h1>{date} - {headline}</h1>
+ 			<h2 spry:if="'{summary}' != '';">{summary}<br /><br /></h2> 			
+			<p class="image_format" spry:if="'{image}' != '';"><img src="images/{image}" /></p>
+			<p class="news_link" spry:if="'{more_info}' != '';"><a href="{more_info_link}" target="_blank">{more_info}</a></p>		</td>
+	</tr>
+</table>
+</div>
+</div>
+</div>
+
+
+
+</body>
+</html>

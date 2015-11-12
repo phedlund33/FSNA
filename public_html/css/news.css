@@ -1,0 +1,55 @@
+h1 {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	margin-top: 10px;
+}
+h2 {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+#issue_news h1 {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
+	margin-top: 10px;
+}
+#issue_news h2 {
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	margin-left: 10px;
+}
+.news_link {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 10px;
+	margin-left: 10px;
+}
+#news_region {
+	border: 1px none #333333;
+}
+
+#news_cell {
+
+	border: 0px none;
+}
+.news_link a:link {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 10px;
+	color: #0000FF;
+}
+.news_link a:visited {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	font-size: 10px;
+	color: #0000FF;
+	text-decoration: underline;
+}
+.news_link a:hover {
+	text-decoration: none;
+}
+.image_format {
+	margin-left: 10px;
+}

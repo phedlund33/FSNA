@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+  Copyright 2011 Google Inc. All Rights Reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Fusion Tables Layer Example: Basic JSONP Request</title>
+    <style type="text/css">
+      #map-canvas {
+        height: 500px;
+        width: 600px;
+      }
+
+      .AgendaItem {
+        font-weight: bold;
+        margin: 10px 0px 0px 0px;
+        padding: 0px;
+      }
+
+      .Presenter, .delivers {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+
+    <script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var query = "SELECT AgendaItem, Presenter FROM " +
+            '1bK6JKlI_ujwvjsvUqztr-tFIT0hQuB-nyLzC_g';
+        var encodedQuery = encodeURIComponent(query);
+
+        // Construct the URL
+        var url = ['https://www.googleapis.com/fusiontables/v1/query'];
+        url.push('?sql=' + encodedQuery);
+        url.push('&key=AIzaSyAHmvVu_aQhPJvFJVfP7siInlAblO4lTus');
+        url.push('&callback=?');
+
+        // Send the JSONP request using jQuery
+        $.ajax({
+          url: url.join(''),
+          dataType: 'jsonp',
+          success: function (data) {
+            var rows = data['rows'];
+            var ftData = document.getElementById('ft-data');
+            for (var i in rows) {
+              var store = rows[i][0];
+              var address = rows[i][1];
+              var dataElement = document.createElement('div');
+              var storeElement = document.createElement('p');
+              storeElement.innerHTML = store;
+              storeElement.className = 'AgendaItem';
+              var addressElement = document.createElement('p');
+              addressElement.innerHTML = address;
+              addressElement.className = 'Presenter';
+
+              dataElement.appendChild(storeElement);
+              dataElement.appendChild(addressElement);
+              
+              ftData.appendChild(dataElement);
+            }
+          }
+        });
+      }
+    </script>
+  </head>
+  <body onload="initialize()">
+    <div id="ft-data"></div>
+  </body>
+</html>

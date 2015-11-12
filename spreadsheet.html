@@ -1,0 +1,20 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" /> 
+  <meta http-equiv="pragma" content="no-cache" /> 
+  <meta http-equiv="expires" content="-1" /> 
+<script type="text/javascript" src="script/ajaxCaller.js"></script> 
+<script type="text/javascript" src="script/util.js"></script> 
+<script type="text/javascript">
+	//ajaxCaller.getPlainText('script/data.json', onResponse);
+	ajaxCaller.getPlainText('http://spreadsheets.google.com/tq?tqx=out:xml&tq=select*&key=0Av8rE9MdGP2adEptWmo1Y19aYi1HeW15YUZFb3J5SUE', onResponse);
+
+	 function onResponse(text) {
+   // Use text (a String)
+		alert(text);
+	}
+	</script>
+</head>
+<body>
+</body>
+</html>

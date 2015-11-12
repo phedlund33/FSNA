@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/> 
+<title>Frys' Spring Neighborhood Association | FSNA</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />   
+<style type="text/css"><!--.style1 {color: #FF0000}.style2 {font-size: 14px}-->  </style>  
+<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+<script type="text/javascript" src="includes/date_format.js"></script> 
+<script type="text/javascript" id="script"> 
+google.load('visualization', '1');
+ 
+function changeData(scorer) {
+
+  var queryText = encodeURIComponent("SELECT 'AgendaItem', 'Presenter', 'URL' FROM 674831 WHERE 'active' = 1 ORDER BY 'Order'");
+  var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryText);
+  
+  getAgendas();
+  query.send(getData);
+}
+ 
+ function getAgendas(){
+	 
+  var queryAgenda = encodeURIComponent("SELECT 'Text', 'URL', 'Date' FROM 2827938 ORDER BY 'Date' DESC");
+  var AgQuery = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryAgenda);
+  
+  AgQuery.send(getAgendaText);
+	 
+ }
+ 
+ function getAgendaText(response)
+ {
+		
+		var previous_month = "-99";
+		var this_month;
+		var next_month;
+		var toggle;
+		var human_date;
+		var next_date;
+		var agenda_date;
+		var fusiontabledata = "";
+		
+		numRows = response.getDataTable().getNumberOfRows();
+  		numCols = response.getDataTable().getNumberOfColumns();
+		
+		 for(i = 0; i < numRows; i++) {
+				human_date = new Date(response.getDataTable().getValue(i, 2));
+				if(i == (numRows - 1))
+				{
+					next_month = "Never";
+				}
+				else
+				{
+					next_date = new Date(response.getDataTable().getValue((i+1), 2));
+					next_month = next_date.format('M');					
+				}
+				var agenda_date = human_date.format('M jS, Y');
+				this_month = human_date.format('M');
+			    next_month = next_date.format('M');
+				
+				if(previous_month != this_month)
+				{
+					fusiontabledata += "<li>"+agenda_date; 
+					fusiontabledata += "<ul>";
+					toggle = true;			
+					
+				}
+			 
+				fusiontabledata += "<li>";
+				fusiontabledata += "<a href="+response.getDataTable().getValue(i, 1)+" target='_blank'>"+response.getDataTable().getValue(i, 0)+"</a>";
+				fusiontabledata +=  "</li>";
+				//alert(previous_month +" - "+ this_month);
+				if(this_month != next_month)
+				{
+					fusiontabledata += "</ul></li>";
+				}
+				
+		    
+			previous_month = human_date.format('M');
+		  }  
+		  
+		 
+		  document.getElementById('agenda_data').innerHTML = fusiontabledata;
+ }
+function getData(response) {
+  numRows = response.getDataTable().getNumberOfRows();
+  numCols = response.getDataTable().getNumberOfColumns();
+  fusiontabledata = "";
+
+  for(i = 0; i < numRows; i++) {
+    for(j = 0; j < numCols; j++) {
+	  
+	  if(j%2 == 0)
+	  {
+		if(j == 2)
+		{
+			if(response.getDataTable().getValue(i, j).length > 5)
+			{
+				fusiontabledata += "<a href='"+response.getDataTable().getValue(i, j)+"'>More...</a><br /><br />";
+			}
+			else
+			{
+				var no_space = true;
+				fusiontabledata += "<br />";
+			}
+		}
+		else
+	  	{
+			
+			fusiontabledata += "<b>";
+			fusiontabledata += response.getDataTable().getValue(i, j)+"<br />";
+			fusiontabledata +=  "</b>";
+		}
+	  }
+		else
+		{
+			if(response.getDataTable().getValue(i, j).length > 3)
+			{
+				fusiontabledata += response.getDataTable().getValue(i, j) + "<br />";
+			}
+		}
+    }
+    //fusiontabledata += "<br />";
+  }  
+  
+  if(fusiontabledata.length < 4)
+  {
+	fusiontabledata = "Upcoming Agenda Items T.B.D.";  
+  }
+  
+  document.getElementById('agenda').innerHTML = fusiontabledata;
+}
+</script> 
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4102074-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+<body onload="changeData();">
+<div id="header_container"><div id="image_right">  <div align="right"></div></div><div id="logo">  <img src="beta/images/header_logo.jpg" alt="Fry's Spring Neighborhood Association" width="275" height="80" /></div></div><div id="nav"><a href="index.html">HOME</a> | <a href="about.html">ABOUT FSNA</a> | <a href="issues_home.html">NEIGHBORHOOD ISSUES</a> | MEETINGS | <a href="fsna_news.html">NEWS</a>| <a href="map.html">MAP</a> | <a href="octoberfest.html">OKTOBERFEST</a> | <a href="links.html">LINKS</a></div><div id="past_meeting_minutes">  <div><h2>Past minutes - to be posted within 14 days of meeting</h2></div>   
+<!-- https://docs.google.com/document/pub?id=1aBCWs-v7aavKkSCi6PK3kamIcCrz9sAhqFYXWMknlDU -->
+<ul>
+	<div id="agenda_data"></div>
+	<!--
+	<li>February 8, 2011
+	  <ul>
+	     <li>-Minutes</li>
+         <li>-Audio Podcast</li>	
+        <li>-<a href="https://www.google.com/fusiontables/embedviz?viz=MAP&q=select+col3+from+2056692+where+col1+%3E+'12%2F31%2F2011'&h=false&lat=38.0212600471177&lng=-78.50910153142087&z=15&t=1&l=col3" target="_blank">Neighborhood Police Report (12/01/2011 - 12/31/2011)</a></li>
+      </ul>
+    </li>
+	<li>January 11, 2011
+	  <ul>
+	     <li>-<a href="https://docs.google.com/document/pub?id=1aBCWs-v7aavKkSCi6PK3kamIcCrz9sAhqFYXWMknlDU" target="_blank">Minutes</a></li>
+         <li>-<a href="http://fsna.avenue.org/audio/January_2012_FSNA.html" target="_blank">Audio Podcast</a></li>	
+         <li>-<a href="https://docs.google.com/document/pub?id=1Vi-JkMYYd5c4utBEaxysE87BHjMeGapDoe0bbUzutSI" target="_blank">NDS Report</a></li>	
+	    <li>-<a href="https://www.google.com/fusiontables/embedviz?viz=MAP&q=select+col3+from+2056692+where+col1+%3E%3D+'12%2F01%2F2011'&h=false&lat=38.02065237853642&lng=-78.51274268200075&z=15&t=1&l=col3" target="_blank">Neighborhood Police Report (12/01/2011 - 12/31/2011)</a></li>
+      </ul>
+    </li>
+    -->
+    
+	<li>December 14, 2011
+	  <ul>
+	     <li>-<a href="https://docs.google.com/document/pub?id=10g7Xq4fK7LaJbOr1ckHRSjGBjYI7r5zxHgpapeLBAMM" target="_blank">Minutes</a></li>
+         <li>-<a href="http://fsna.avenue.org/audio/December_2011_FSNA.html" target="_blank">Audio Podcast</a></li>		
+	    <li>-<a href="https://www.google.com/fusiontables/embedviz?viz=MAP&q=select+col3+from+2056692+where+col1+%3E%3D+'11%2F1%2F2011'+and+col1+%3C%3D+'12%2F01%2F2011'&h=false&lat=38.018564991401306&lng=-78.51334349682008&z=16&t=1&l=col3" target="_blank">Neighborhood Police Report (11/01/2011 - 11/31/2011)</a></li>
+      </ul>
+    </li>
+	<li>November 9, 2011
+	  <ul>
+	     <li>-<a href="https://docs.google.com/document/pub?id=1Egzn3Yahc7-bFRqnQEViz0t03DeC90A74kvET5u_6V4" target="_blank">Minutes</a></li>
+         <li>-<a href="http://fsna.avenue.org/audio/November_2011_FSNA.html" target="_blank">Audio Podcast</a></li>	
+	    <li>-<a href="https://www.google.com/fusiontables/embedviz?viz=MAP&q=select+col3+from+2056692+where+col1+%3E%3D+'10%2F01%2F2011'+and+col1+%3C%3D+'11%2F01%2F2011'&h=false&lat=38.015310483995364&lng=-78.51171271373903&z=15&t=1&l=col3" target="_blank">Neighborhood Police Report (10/01/2011 - 11/01/2011)</a></li>
+      </ul>
+    </li>
+	<li>October 12, 2011
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=126Rh02q-LaXHk7TDa-TLGi9PkQED7zf2C5Nm8irc394" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/October_2011_FSNA.html" target="_blank">Audio Podcast</a></li>
+		<li>-<a href="https://docs.google.com/document/pub?id=18I70CojDsUd7ofXfoADx-ceyH1QZ7NLbH4WY85PARXk" target="_blank">NDS Report</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1BsLbBSmesq5rh4DrdBYHiDFqkzBSZivrsjHRY3BAW1c" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>September 14, 2011
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1TS9uPj2zuu1RLVjtRRa6zftTBDms3VGhjUDqQsCz6xo" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/September_2011_FSNA.html" target="_blank">Audio Podcast</a></li>
+
+	    <li>-<a href="https://docs.google.com/document/pub?id=13hke_Gbb_LAd_MclPJ0TsenQj13vyVyzR4sAfsKw8U8" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>July 13, 2011
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=10-2MWd6eXZEXzwUwkJWDxiqDYkpybhhlOmZ-941sUd0" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/July_2011_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1PO31paIka7xVJ0IpQG5Ujas8faapemyCVAAkjobVmc8" target="_blank">NDS Report</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1yhtqVk-4rxeA4aT7oqsIGqrCmahdVYSzfcPdvG3QA_A" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>June 8, 2011
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1FSB-U1lHUwJ-wnQ1sHRFWVIHCySCjZG0fyVMQn050WA" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/June_2011_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-NDS Report</li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1miho-YkhIXW2ODloqcRKJXsdiVdrYbacDpkHKq15WLU" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>May 11, 2011
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=12jwB10S28sll6nCIMNF1zaqOUj1sxTEtzv-KqJf_7g8" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/May_2011_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-NDS Report</li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1FP4rsnAKNF3UvWMzm6r4RS40kvH-IKPpdS6kPJLMdew" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>April 13, 2011
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1JkbANPZeolcVxwfj6taoI1CwVI3HSDdLFpJ4o0rn7yg" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/April_2011_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-NDS Report</li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1m9dvDhMHRrEc6EZGZtTionK04A09dLmoJlH3AMmpL1o" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>March 9, 2011
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1qJMd-l2_IYLLtTvbcsWJuucfJRO4zC63ThA-JjGemI4" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/March_2011_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-NDS Report</li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=18w6DcVi1V6MWzI6qxgmOLHQbXVtzO9DHTKGucWxiVHA" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>February 9, 2011
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1SIwmHEJEpy64UzawMz__eUgNOlgyEgFb426vnyYKm2o" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/February_2011_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-NDS Report</li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=16UWzm0_lF8SWhb35cSDAosWtviKGNtZTRYybe2Iu868" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+
+	<li>January 12, 2011
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=10nvQZkkUjiMCA7ks_ZhlaglpQZ8iuaH426SJOK0jUA8" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/January_2011_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=146I-zOIum5ozCQBUu72R2txouL2cppyeXsxyU95HHMM" target="_blank">NDS Report</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1hpRjn0VYo5JlhJhkW9bphZyWDXR3gFn6XSPimhSciKo" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>December 8, 2010
+	  <ul>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1hwp6l0PkjZVh-H5wZ6TPYGmudW5ida7PFF57m3Tsh-s" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/December_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1YU6jKEhIhhEFMov8t0oOfRwONWxcoVVD203QNDCIMFI" target="_blank">NDS Report</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1bXxrA_Y_P9lwUISyWqdZ6hWSZz1T_ghtE682Tfi1EY4" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>November 10, 2010
+	  <ul>
+	    <li>-<a href="http://fsna-bucket01.s3.amazonaws.com/pdf/minutes. November 10, 2010 FSNA Mtg..doc.pdf" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/November_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1Fz66mrKuYBWQQwTdHAs_cw8v-Cdu8VSfolO7jBavwHA" target="_blank">NDS Report</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=14zofLqGnCBTIUXbLJPjr-lrYyrXpBjhgC1f5By5HRiM" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>October 13, 2010
+	  <ul>
+	    <li>-<a href="http://fsna-bucket01.s3.amazonaws.com/pdf/20101013 Minutes.pdf" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/October_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1RDN_8gHUobbQKvfK4vlqn4E1I6NsmB-r9gYfneMc23s" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_693crh7qsdj" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>September 8, 2010
+	  <ul>
+	    <li>-<A href="http://fsna-bucket01.s3.amazonaws.com/pdf/20100908 Minutes.pdf" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/September_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1ejjeGIpo0RimgUuEFM6fp6Ymp0HcuOixml99x9h1Z2M" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_6914xgv3pcv" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>August 11, 2010
+	  <ul>
+	    <li>-<A href="http://fsna-bucket01.s3.amazonaws.com/pdf/20100811_ Minutes.pdf" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/August_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="https://docs.google.com/document/pub?id=1lRi8oLszDxCib1-bvuxeTfJcLyfXrBCzUj4_4VpYSZE" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_690c7dhswcz" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>July 14, 2010
+	  <ul>
+	    <li>-<A href="http://fsna-bucket01.s3.amazonaws.com/pdf/20100714 Minutes.pdf" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/July_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/document/pub?id=1cSFTR5rxLTlwiDB3pWW87_N8khFmbrVamOrXos7uGLE" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_689ctsxrzfd" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>June 9, 2010
+	  <ul>
+	    <li>-<A href="http://fsna-bucket01.s3.amazonaws.com/pdf/20100609 Minutes.pdf" target="_blank">Minutes</a></li>
+        <li>-<a href="http://fsna.avenue.org/audio/June_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=ddtxgwjs_0d5m8sffr" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/document/pub?id=1qUfliMwf7dnQL0-nRBBFZ9rq3-xTakuxlOiNAcMqMYg" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>May 12, 2010
+	  <ul>
+	    <li>-<a href="http://fsna-bucket01.s3.amazonaws.com/pdf/20100512 Minutes.pdf" target="_blank">Minutes</a></li>
+        <li>-<a href="http://avenue.org/fsna/audio/May_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_672d9bzt6cf" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_676ddn23jgk" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+    </li>
+	<li>April 14, 2010
+	  <ul>
+	    <li>-<a href="http://fsna-bucket01.s3.amazonaws.com/pdf/20100414 Minutes.pdf" target="_blank">Minutes</a></li>
+        <li>-<a href="http://avenue.org/fsna/audio/April_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_660crtk5gcs" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_659dhqkjvd3" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li> 	<li>March 10, 2010
+	  <ul>
+	    <li>-<a href="http://fsna-bucket01.s3.amazonaws.com/pdf/20100310Minutes.pdf" target="_blank">Minutes</a></li>
+        <li>-<a href="http://avenue.org/fsna/audio/March_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_651httfkz3p" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_650dgktcjd9" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li> 
+	<li>February 10, 2010 (meeting canceled)
+	  <ul>
+	    <li>-Minutes</li>
+        <li>-Audio Podcast</li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_626ftfh3f45" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_629cn7h9ng4" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li> 
+	<li>January 13, 2010
+	  <ul>
+	    <li>-<a href="https://docs.google.com/fileview?id=0B_8rE9MdGP2aNDI0MmFjYzctMGY1OS00ZTdjLWFjMGItMWFkM2JjNTU1MjE0&hl=en" target="_blank">Minutes</a></li>
+        <li>-<a href="http://avenue.org/fsna/audio/January_2010_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_620c73pmpg2" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_622fsbdkkg5" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li> 
+	<li>December 9, 2009
+	  <ul>
+	    <li>-<a href="https://docs.google.com/fileview?id=0B_8rE9MdGP2aYzI3MTE3NzgtMmQ1OC00ZjM3LTk4ZTQtOTNmZGY3YmNmNDFm&hl=en" target="_blank">Minutes</a></li>
+       
+	    <li>-<a href="http://avenue.org/fsna/audio/December_2009_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_600cdwmqxdq" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_605cvtxxtc9" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li> 
+	<li>November 11, 2009
+	  <ul>
+	    <li>-<a href="minutes/20091111Minutes.pdf" target="_blank">Minutes</a></li>
+	    <li>-<a href="http://avenue.org/fsna/audio/November_2009_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_596fd5nzhhq" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_595jd58z2f9" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li> 
+	<li>October 14, 2009
+	  <ul>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_598xwpvhdg" target="_blank">Minutes<a/></li>
+	    <li>-<a href="http://avenue.org/fsna/audio/October_2009_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_579f5xmz3gn" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_581fr356qf4" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li> 
+	<li>September 9, 2009
+	  <ul>
+	    <li>-Minutes</li>
+	    <li>-<a href="http://avenue.org/fsna/audio/September_2009_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_563cn7534d7" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_562ggxfm2hp" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li> 
+	<li>August 12, 2009
+	  <ul>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_559hmjrzwc9" target="_blank">Minutes</a></li>
+	    <li>-<a href="http://avenue.org/fsna/audio/August_2009_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_541fj39rdhk" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_543fj3xt7pt" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li> 
+	<li>July 8, 2009
+	  <ul>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_534fx5mwffx" target="_blank">Minutes</a></li>
+	    <li>-<a href="http://avenue.org/fsna/audio/July_2009_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_519f56btjgh" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_521ddmm27ht" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li>   
+	<li>June 10, 2009
+	  <ul>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_514d39ztbdk" target="_blank">Minutes</a></li>
+	    <li>-<a href="http://avenue.org/fsna/audio/June_2009_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_501tjphg7hq" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/View?id=d7qd4sg_503f34km6sv" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li>   
+	<li>May 18, 2009
+	  <ul>
+	    <li>-Minutes</li>
+	    <li>-Audio Podcast</li>
+	    <li>-<a href="http://docs.google.com/Doc?id=d7qd4sg_4938j8kztf9" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/Doc?id=d7qd4sg_492fxhcm7gx" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+   </li>   
+   	
+	<li>April 8, 2009
+	  <ul>
+	    <li>-<a href="http://docs.google.com/Doc?id=d7qd4sg_488c86v28ct" target="_blank">Minutes</a></li>
+	    <li>-<a href="http://avenue.org/fsna/audio/April09_FSNA.html" target="_blank">Audio Podcast</a></li>
+	    <li>-<a href="http://docs.google.com/Doc?id=d7qd4sg_472cwd24r96" target="_blank">NDS Report</a></li>
+	    <li>-<a href="http://docs.google.com/Doc?id=d7qd4sg_468twbhv7gt" target="_blank">Neighborhood Police Report</a></li>
+      </ul>
+	</li>
+    
+	<li>March 11, 2009</li>	    
+    	<ul>		    
+        	<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_466hv6hdxdn" target="_blank">Minutes</a></li>                    
+            <li>&nbsp;-<a href="http://avenue.org/fsna/audio/March09_FSNA.html" target="_blank">Audio Podcast</a></li>	                    
+            <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_455c9472hgt" target="_blank">NDS Report</a></li>                    
+            <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_462c7678rh4" target="_blank">Neighborhood Police Report</a></li>                    
+         </ul>          
+</ul> 
+<ul>    	
+<li>February 11, 2009</li>	    
+    	<ul>		    
+        	<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_450fngq46fr" target="_blank">Minutes</a></li>                    
+            <li>&nbsp;-<a href="http://avenue.org/fsna/audio/February2009_FSNA.html" target="_blank">Audio Podcast</a></li>	                    
+            <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_438dv723m49" target="_blank">NDS Report</a></li>                    
+            <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_444c7j8tcgx" target="_blank">Neighborhood Police Report</a></li>                    
+         </ul>          
+</ul>         
+<ul>    	
+    <li>January 14, 2009</li>
+    	<ul>		    
+        	<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_443f5fh8thp" target="_blank">Minutes</a></li>                    
+            <li>&nbsp;-<a href="http://avenue.org/fsna/audio/January2009_FSNA.html" target="_blank">Audio Podcast</a></li>	                    
+            <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_422gqzw4qgc" target="_blank">NDS Report</a></li>                    
+            <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_426ccvks8gb" target="_blank">Neighborhood Police Report</a></li>                   
+       	</ul>          </ul>         <ul>    	<li>December 10, 2008</li>				<ul>		    		<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_417dfnzrf38" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="http://avenue.org/fsna/audio/December08_FSNA.html" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_405kjc466cg" target="_blank">NDS Report</a></li>                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_408gtqkgxdk" target="_blank">Neighborhood Police Report</a></li>                    </ul>		<li>November 12, 2008</li>				<ul>		    		<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_410c2hpcqgq" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="http://avenue.org/fsna/audio/November08_FSNA.html" target="_parent">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_3927pz37qhm" target="_blank">NDS Report</a></li>                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_396gkx7ppd7" target="_blank">Neighborhood Police Report</a></li>                    </ul>	  	<li>October 8, 2008</li>				<ul>		    		<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_388c4qczvhn" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="http://avenue.org/fsna/audio/October08_FSNA.html" target="_parent">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_375wxkptjgg" target="_blank">NDS Report</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_378grq3g2g5" target="_blank">Neighborhood Police Report</a></li>							</ul>            <li>September 10, 2008</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_373cn22b5x4" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="audio/September10_FSNA.html" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_366dtvjmghr" target="_blank">NDS Report</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_369f8phmzgq" target="_blank">Neighborhood Police Report</a></li>							</ul>            	<li>August 13, 2008</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_359d337rwpc" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="audio/August13_FSNA.html" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_349f6h9sths" target="_blank">NDS Report</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_352gdd4q9gt" target="_blank">Neighborhood Police Report</a></li>							</ul>                    	<li>July 9, 2008</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/View?docid=d7qd4sg_343d6kr97fx" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="audio/July09_FSNA.html" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_332grc6tfdv" target="_blank">NDS Report</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_335dfgcxqg8" target="_blank">Neighborhood Police Report</a></li>							</ul>                   	<li>June 11, 2008</li>				<ul>					<li>&nbsp;-<a href=" http://docs.google.com/Doc?id=d7qd4sg_320dt2qsdcf" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="audio/June11_FSNA.html" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_322dgpzvwgs" target="_blank">NDS Report</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_325gw6c78cn" target="_blank">Neighborhood Police Report</a></li>							</ul>             	<li>May 14, 2008</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_278tzbdh5fr" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="audio/May14_FSNA.html" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_270f4cx3df6">NDS Report</a></li>								</ul>         	         	<li>April 9, 2008</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_261vf9zftcd" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="audio/April08_FSNA.html" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_262f8gt8j3t">NDS Report</a></li>								</ul>           	<li>March 12, 2008</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_239dt9gw5cz" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="http://www.switchpod.com/f61073.html?puser=none" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_240dfsg8cgx" target="_blank">NDS Report</a></li>								</ul>                      	<li>February 13, 2008</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_243dv46zmdf" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="http://switchpod.com/f57614.html?puser=none" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_222dfrfk2cf" target="_blank">NDS Report</a></li>								</ul>             <li>January 9, 2008</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_208ggzh24dw" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="http://www.switchpod.com/f52356.html?puser=none" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-NDS Report (none provided for January)</li>								</ul>             <li>December 12, 2007</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_185hs7k9zg9" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="http://www.switchpod.com/f49762.html?puser=none" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href ="http://docs.google.com/Doc?id=d7qd4sg_186c26wfvsc" target="_blank">NDS Report</a></li>								</ul>            <li>November 14, 2007</li>				<ul>					<li>&nbsp;-<a href="http://docs.google.com/Doc?id=d7qd4sg_173hh2g7f" target="_blank">Minutes</a></li>                    <li>&nbsp;-<a href="http://www.switchpod.com/f46617.html?puser=none" target="_blank">Audio Podcast</a></li>	                    <li>&nbsp;-<a href ="http://docs.google.com/Doc?id=d7qd4sg_165cfrsxt" target="_blank">NDS Report</a></li>								</ul>         	<li>October 10, 2007</li>				<ul>					<li>&nbsp;-<a href="minutes/minutes_2007_10_10.doc" target="_blank">Minutes</a></li>					<li>&nbsp;-<a href="http://www.switchpod.com/f43719.html?puser=none" target="_blank">Audio Podcast</a></li>									</ul>                  	<li>September 12, 2007</li>				<ul>					<li>&nbsp;-<a href="minutes/minutes_2007_09_12.doc" target="_blank">Minutes</a></li>					<li>&nbsp;-<a href="http://www.switchpod.com/playing.php?action=view&id=39672&ftp=no&fuser=fsna&puser=&sound=yes" target="_blank">Audio Podcast</a></li>									</ul>         	<li>August 8, 2007</li>				<ul>					<li>&nbsp;-<a href="minutes/minutes_2007_08_08.doc" target="_blank">Minutes</a></li>					<li>&nbsp;-<a href="http://www.switchpod.com/f35192.html?puser=none" target="_blank">Audio Podcast</a></li>									</ul>						<li><a href="minutes/minutes_2007_07_11.doc" target="_blank">July 11, 2007</a> </li>            	<ul>                	<li><a href="minutes/residential_zoning_districts.doc" target="_blank">Residential Zoning Districts</a> </li>                    <li><a href="minutes/Residential_Zones.pdf" target="_blank">Residential Zones</a></li>                    <li><a href="https://share.adobe.com/adc/document.do?docid=26941287-a668-11dc-b795-2b393241dee0" target="_blank">Residential Zoning Matrix</a></li>                </ul>            <li><a href="minutes/minutes_2007_06_13.doc" target="_blank">June 13, 2007</a> </li>		 	<li><a href="minutes/minutes_2007_05_09.doc" target="_blank">May 09, 2007</a> </li>		 	<li><a href="minutes/minutes_2007_04_11.doc" target="_blank">April 11, 2007</a> </li>		 	<li><a href="minutes/FSNA Minutes March 14, 2007.doc" target="_blank">Mar. 14, 2007</a> </li>			<li><a href="minutes/Frys Spring Neighborhood Association February 14.doc" target="_blank">Feb. 14, 2007</a> </li>		 	<li><a href="minutes/January 10, 2007.doc" target="_blank">Jan. 10, 2007</a> </li>			<li><a href="minutes/FSNA Minutes, December 12, 2006.doc" target="_blank">Dec. 12, 2006</a> </li>		 	<li><a href="minutes/FSNA Minutes, November 8, 2006.doc" target="_blank">Nov. 8, 2006</a> </li>		 	<li><a href="minutes/FSNA Minutes, October 11, 2006.doc" target="_blank">Oct. 11, 2006</a> </li>		 	<li><a href="minutes/SessionOctober 4.doc" target="_blank">Oct. 4, 2006 (Highland Ave. traffic calming)</a> </li>		 	<li><a href="minutes/FSNA Minutes, September 13, 2006.doc" target="_blank">Sept 13, 2006</a> </li>            <li><a href="minutes/FSNA Minutes, July 12, 2006.doc" target="_blank">July 12, 2006</a> </li>            <li><a href="minutes/FSNA Minutes June 14, 2006.doc" target="_blank">June 14, 2006</a> </li>            <li><a href="news/FSNA Minutes, May 10, 2006.doc" target="_blank">May 10, 2006</a></li>            <li><a href="news/FSNA_Minutes_April122006.doc" target="_blank">April 12, 2006</a> </li>            <li><a href="news/FSNA Minutes March 8, 2006.doc" target="_blank">March 8, 2006</a> </li>            <li><a href="news/Board_Meeting_February_8_2006.doc" target="_blank">February 8, 2006 (board meeting) </a></li>            <li><a href="news/Minutes_Jan_11_2006.pdf" target="_blank">January 11, 2006 </a></li>            <li><a href="https://share.adobe.com/adc/document.do?docid=0cc4367f-a667-11dc-b795-2b393241dee0" target="_blank">November 9, 2005</a>              <ul>                <li><a href="news/highland-1.pdf" target="_blank">Traffic calming on Highland</a></li>                    <li><a href="news/robertson.pdf" target="_blank">Traffic calming on Robertson</a></li>                    <li><a href="http://www.charlottesville.org/default.asp?display=edit&pageid=38781F44-1723-48BA-AAA4-B7290E55E741&pagetypeid=F5328526-B756-11D5-8A94-006067309844" target="_blank"></a></li>              </ul>            </li>  </ul>          <ul>            <li><a href="minutes/FSNA Minutes, October 11, 2006.doc" target="_blank">October 26, 2005 (JPA Bridge) </a></li>            <li><a href="news/Minutes_Oct_12_2005.pdf" target="_blank">October 12, 2005</a> </li>            <li><a href="news/Minutes_Sep_14_2005.pdf" target="_blank">September 14, 2005</a> </li>            <li><a href="news/Minutes_Aug_10_2005.pdf" target="_blank">August 10, 2005</a> </li>            <li><a href="news/Minutes%20%20July%2013%20%202005.pdf" target="_blank">July 13th, 2005</a><br>            </li>          </ul></div>	<div id="meeting">	  <p>Fry's Spring Neighborhood Association meetings are held the second Wednesday	    of every month at 6:00 pm at The Cherry Avenue Christian Church</p>	  <p class="style2">(<span class="style1">Meeting agenda items are timed to allow the meeting to end by 7:30</span>)</p>	  
+        
+<div id="agenda"></div>
+</body></html>

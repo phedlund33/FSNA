@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Fry's Spring Neighborhood Association | FSNA</title>
+<link href="css/news.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="includes/xpath.js"></script>
+<script type="text/javascript" src="includes/SpryData.js"></script>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+var dsNews = new Spry.Data.XMLDataSet("XML/news.xml", "news_items/news_item");
+
+// Filter out all rows that don't have a path that begins
+// with the letter 's'.
+function FilterData()
+{
+	var tf = document.getElementById("filterTF");
+	if (!tf.value)
+	{
+		// If the text field is empty, remove any filter
+		// that is set on the data set.
+
+		dsNews.filter(null);
+		return;
+	}
+
+	// Set a filter on the data set that matches any row
+	// that begins with the string in the text field.
+	
+	var regExpStr = tf.value;
+	
+	//if (!document.getElementById("containsCB").checked)
+	//	regExpStr = "^" + regExpStr;
+
+	var regExp = new RegExp(regExpStr, "i");
+	
+	var filterFunc = function(ds, row, rowNumber)
+	{
+		var str = row["summary"];
+		var str2 = row["headline"];
+		if (str && str.search(regExp) != -1 || str2 && str2.search(regExp) != -1)
+			return row;
+		return null;
+	};
+
+	dsNews.filter(filterFunc);
+}
+// Filter out all rows that don't have a path that begins
+// with the letter 's'.
+function SelectTopic()
+{
+	var tf = document.getElementById("topic_selector");
+	if (!tf.value)
+	{
+		// If the text field is empty, remove any filter
+		// that is set on the data set.
+
+		dsNews.filter(null);
+		return;
+	}
+
+	// Set a filter on the data set that matches any row
+	// that begins with the string in the text field.
+	
+	var regExpStr = tf.value;
+
+	var regExp = new RegExp(regExpStr, "i");
+	
+	var filterFunc = function(ds, row, rowNumber)
+	{
+		var str = row["type"];
+		if (str && str.search(regExp) != -1)
+			return row;
+		return null;
+	};
+
+	dsNews.filter(filterFunc);
+}
+
+function StartFilterTimer(type)
+{	
+	if (StartFilterTimer.timerID)
+		clearTimeout(StartFilterTimer.timerID);
+	if(type == "search")
+	{
+		StartFilterTimer.timerID = setTimeout(function() { StartFilterTimer.timerID = null; FilterData(); }, 100);
+	}
+	else if(type == "topic")
+	{
+		StartFilterTimer.timerID = setTimeout(function() { StartFilterTimer.timerID = null; SelectTopic(); }, 100);
+	}
+}
+</script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4102074-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+
+<body>
+<div id="header_container">
+<div id="image_right">
+  <div align="right"><img src="beta/images/header_top_right.jpg" alt="picture of Fry's Spring Beach Club" width="158" height="80" /></div>
+</div>
+<div id="logo">
+  <img src="beta/images/header_logo.jpg" alt="Fry's Spring Neighborhood Association" width="275" height="80" /></div>
+</div>
+<div id="nav"><a href="index.html">HOME</a> | <a href="about.html">ABOUT FSNA</a> | <a href="issues_home.html">NEIGHBORHOOD ISSUES</a> | <a href="meetings.html">MEETINGS</a> | NEWS| <a href="map.html">MAP</a> | <a href="octoberfest.html">OKTOBERFEST</a> | <a href="links.html">LINKS</a></div>
+<div id="content">
+<form>
+<p>Search all news: 
+	<input type="text" id="filterTF" onkeyup="StartFilterTimer('search');" />
+	<label>OR Filter news by Topics: 
+	<select name="topic_selector" id="topic_selector" onchange="StartFilterTimer('topic')">
+	  <option value="" selected="selected">All Topics</option>
+      <option value="AP">Azalea Park</option>
+	  <option value="OLR">Old Lynchburg Road</option>
+	  <option value="BR">Biscuit Run</option>
+	  <option value="CH">Cherry Hill</option>
+      <option value="ER">Eton Road Development</option>
+	  <option value="HN">Huntley</option>
+	  <option value="GP">Granger Property</option>
+      <option value="OP">Oxford Property</option>
+	  <option value="JP">JPA Bridge</option>
+	  <option value="TR">Traffic Calming</option>
+	  <option value="EN">Environment</option> 
+      <option value="HC">Hill/Center PUD</option> 
+      <option value="WL">Willoughby Place Apartments</option>      
+	  <option value="OTHER">Other</option>
+    </select>
+	</label>
+</p>
+</form>
+<div spry:region="dsNews" id="news_region">
+<table border="0" width="100%">
+	<tr spry:repeat="dsNews">
+		<td> 
+			<h1>{date} - {headline}</h1>
+ 			<h2 spry:if="'{summary}' != '';">{summary}<br /><br /></h2> 			
+			<p class="image_format" spry:if="'{image}' != '';"><img src="images/{image}" /></p>
+			<p class="news_link" spry:if="'{more_info}' != '';"><a href="{more_info_link}" target="_blank">{more_info}</a></p>
+		</td>
+	</tr>
+</table>
+</div>
+<a href="news.html">archived news items</a></div>
+
+</body>
+</html>

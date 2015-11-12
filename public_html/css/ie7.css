@@ -1,0 +1,43 @@
+nav#main-nav ul li {
+	display: inline;
+}
+
+figcaption.overlay {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+}
+
+.article section.intro figure figcaption {
+	position: absolute;
+	bottom: 0px;
+	left: 4px;
+	padding: 0px;
+}
+
+span.button.myva {
+	display: block;
+}
+
+.media-detail section.tab-invert .slideshow .wrapper figure figcaption span.zoom {
+	display: block;
+	min-height: 0;
+}
+
+.media-detail figure .carousel-container {
+	margin-top: 20px;
+}
+
+span.carousel-control {
+	display: block;
+}
+
+.media-detail section.tab-invert .slideshow .wrapper article nav .img-block {
+	display: block;
+	padding-top: 8px;
+}
+
+.media-detail section.tab-invert .slideshow .wrapper article nav li {
+	float: left;
+	margin-right: 5px;
+}

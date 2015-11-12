@@ -1,0 +1,285 @@
+
+<!DOCTYPE html PUBLIC "-//W3C/DTD XHTML 1.0 Strict//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+
+<html xmln="http://www.w3.org/1999/xhtml"> 
+<head> 
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/> 
+ 
+<title>Explore Virginia | ENCYCLOPEDIA VIRGINA</title> 
+ 
+<style> 
+  body { font-family: Arial, sans-serif; }
+
+  #map_canvas { 
+	height: 400px; 
+	width:775px; 
+	margin: 0px auto -1px auto; 
+	border: 1px black solid;
+	
+}
+
+	#controls{
+		width: 763px;
+		border: 1px solid gray;
+		border-bottom: 0px;
+		background: #ccc;
+		padding: 6px;
+		margin: 0px auto -1px auto; 
+}	
+    .goog-slider-horizontal {
+      border: solid 1px #CCCCCC;
+      background-color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .goog-slider-thumb {
+      position: absolute;
+      background-color: #3399CC;
+      overflow: hidden;
+      width: 10px;
+      height: 100%;
+      top: 0;
+    }
+</style> 
+ 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="geoxml3_kmlStr.js"></script>
+
+<script type="text/javascript" id="script"> 
+
+google.load('visualization', '1');
+
+
+var sliderTimer;
+var layer;
+var slider;
+
+var tbl_county = 799472;
+var tbl_house = 799301;
+var tbl_senate = 799234;
+var tbl_historic = 803194;
+var zoom = 7;
+var center = new google.maps.LatLng(38.00, -79.27);
+var current_table;
+var current_map;
+var layer_2_display;
+var map;
+var gpolygons = [];
+var geoXml = null;
+var geoXmlDoc = null;
+var current_selection = null;
+
+
+var layer_2_display = new google.maps.FusionTablesLayer(tbl_house); //create a new FusionTablesLayer
+ function changeData(scorer) {
+
+  var queryText = encodeURIComponent("SELECT 'AgendaItem', 'Presenter' FROM 674831 WHERE 'active' = 1 ORDER BY 'Order'");
+  var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryText);
+  
+  query.send(getData);
+}
+ 
+(function() {
+	window.onload = function(){
+			setUpMap();
+	}
+	setUpMap = function(){
+			map = new google.maps.Map(document.getElementById('map_canvas'), {
+			center: center,
+			zoom: zoom,			
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+			 });
+		
+		layer_2_display.setMap(map);
+
+		var infoWindow = new google.maps.InfoWindow;
+/*
+		downloadUrl("exhibit.xml", function(data) {
+				
+			  var xml = data.responseXML;
+			  var markers = xml.documentElement.getElementsByTagName("marker");
+			  for (var i = 0; i < markers.length; i++) {
+				    var name = markers[i].getAttribute("name");
+				    var point = new google.maps.LatLng(
+					parseFloat(markers[i].getAttribute("latitude")),
+					parseFloat(markers[i].getAttribute("longitude")));
+				    var html = "<b>" + name + "</b> <br />";
+				    var marker = new google.maps.Marker({
+				      map: map,
+				      position: point
+			    });
+			    bindInfoWindow(marker, map, infoWindow, html);
+			  }
+			});
+*/
+
+	}
+	bindInfoWindow = function(marker, map, infoWindow, html) {
+	  google.maps.event.addListener(marker, 'click', function() {
+	    infoWindow.setContent(html);
+	    infoWindow.open(map, marker);
+	  });
+	}
+	downloadUrl = function(url,callback) {
+	 var request = window.ActiveXObject ?
+	     new ActiveXObject('Microsoft.XMLHTTP') :
+	     new XMLHttpRequest;
+
+	 request.onreadystatechange = function() {
+		
+	   if (request.readyState == 4) {
+	     request.onreadystatechange = doNothing;
+	     callback(request, request.status);
+	   }
+	 };
+
+	 request.open('GET', url, true);
+	 request.send(null);
+	}
+	doNothing = function() {};
+
+	initialize_slider = function(){
+		 	var sliderElement = document.getElementById('slider');
+		      	slider = new goog.ui.Slider;
+		      	slider.decorate(sliderElement);
+		      	slider.addEventListener(goog.ui.Component.EventType.CHANGE, function() 
+			{
+				// Avoid updating the map too often by ignoring slider value changes
+				// that occur within 200mS of eachother.
+				if (sliderTimer) window.clearTimeout(sliderTimer);
+				//sliderTimer = window.setTimeout(updateMap, 200);
+				document.getElementById("slider-value").innerHTML = slider.getValue() + " mi";
+		      	});
+		      	slider.setValue(25);
+
+	}
+	toggle_map = function(radio, name)
+	{
+		setUpMap(); //do I really have to completely redraw the google map to clear previous overlays?
+		var display_table = eval('tbl_'+name);
+		current_map = name;
+		current_table = display_table;
+		
+		var temp_query = "SELECT 'geometry' FROM 799301 WHERE 'DISTRICT' = '14'";
+		load_polygon_names(name, display_table);
+		
+		layer_2_display.setMap(null);		
+		layer_2_display = new google.maps.FusionTablesLayer(display_table);		
+		layer_2_display.setMap(map);
+	}
+	load_polygon_names = function(name, display_table)
+	{
+		var queryText;
+		if(name == 'county')
+		{
+			queryText = "SELECT 'NAME' FROM "+display_table+" GROUP BY 'NAME' ORDER BY 'NAME'";
+		}
+		else
+		{
+			queryText = "SELECT 'DISTRICT' FROM "+display_table+" ORDER BY 'DISTRICT'";
+		}
+		var query = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + queryText);
+  
+		query.send(getData);
+	
+	}
+	getData = function(response)
+	{
+		numRows = response.getDataTable().getNumberOfRows();	
+		
+		
+		
+		var ddl = "<select id='polygon' onchange='javascript:polygonSelected(this);'>";
+			
+		for(i = 0; i < numRows; i++) 
+		{
+			ddl += "<option value='"+response.getDataTable().getValue(i,0)+"'>"+response.getDataTable().getValue(i,0)+"</option>";
+		}
+		
+		ddl += "</select>";
+		document.getElementById('mdrn_cty_data').innerHTML = ddl;
+	}
+	polygonSelected = function(selected_element)
+	{
+		//alert(selected_element.value);
+		displayPolygon(selected_element.value);
+	}
+	displayPolygon = function(polygon_2_display)
+	{
+		current_selection = polygon_2_display; 		
+	
+		var q;
+		if(current_map == 'county')
+		{
+			q = "SELECT 'geometry' FROM "+current_table+" WHERE 'NAME' = '"+polygon_2_display+"'";
+		}
+		else
+		{
+			q = "SELECT 'geometry' FROM "+current_table+" WHERE 'DISTRICT' = "+polygon_2_display;
+		}
+		
+		var query2 = new google.visualization.Query('http://www.google.com/fusiontables/gvizdata?tq='  + q);
+		query2.send(getShape);
+
+	}
+	getShape = function(response)
+	{
+
+     		var kml =  response.getDataTable().getValue(0,0);
+     		// create a geoXml3 parser for the click handlers
+    		 var geoXml = new geoXML3.parser({
+                    map: map,
+		    zoom: false
+                });
+
+		geoXml.parseKmlString("<Placemark>"+kml+"</Placemark>");
+		geoXml.docs[0].gpolygons[0].setMap(null);
+		gpolygons[0] = new Object();
+		gpolygons[0].position = geoXml.docs[0].gpolygons[0].bounds.getCenter();
+		gpolygons[0].bounds = geoXml.docs[0].gpolygons[0].bounds;
+     		
+		
+		var q;
+		if(current_map == 'county')
+		{
+			q = "SELECT 'geometry' FROM "+current_table+" WHERE 'NAME' = '"+current_selection+"'";
+		}
+		else
+		{
+			q = "SELECT 'geometry' FROM "+current_table+" WHERE 'DISTRICT' = "+current_selection;
+		}
+
+		document.getElementById('query').innerHTML = q;
+		layer_2_display.setMap(null);
+		map.fitBounds(gpolygons[0].bounds);
+		layer_2_display.setQuery(q);
+		layer_2_display.setMap(map);	
+
+		
+   	}
+
+})();
+
+ 
+</script> 
+</head> 
+<body> 
+<div id="content">
+<div id="query"></div> 
+<form name="map">
+<div id="controls">
+County:	<input type="radio" name="map_type" onclick="toggle_map(this, 'county')" /> | 
+Virginia House: <input type="radio" name="map_type" onclick="toggle_map(this, 'house')" /> | 
+Virginia Senate: <input type="radio" name="map_type" onclick="toggle_map(this, 'senate')" />
+<span id="mdrn_cty_data"></div>
+</div>
+</form> 
+<div id="map_canvas"></div> 
+
+
+
+</body> 
+</html> 
